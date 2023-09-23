@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import jdk.jfr.Timespan;
+
+import java.util.Date;
 
 
 @Entity
@@ -30,10 +33,27 @@ public class Book {
       @Min(value = 1900, message = "Принимаем книги начиная с 1900 годах")
       private int year;
 
+      @Column(name = "created_at")
+      @Temporal(TemporalType.TIMESTAMP)
+      private Date taken_at;
+
+      @Transient
+      private Boolean expired;
+
       @ManyToOne
       @JoinColumn(name = "person_id", referencedColumnName = "person_id")
       private Person person;
 
+
+      public Book() {
+      }
+
+      public Book(int book_id, String title, String author, int year) {
+            this.book_id = book_id;
+            this.title = title;
+            this.author = author;
+            this.year = year;
+      }
       public int getBook_id() {
             return book_id;
       }
@@ -66,21 +86,34 @@ public class Book {
             this.year = year;
       }
 
-      public Book() {
-      }
-
-      public Book(int book_id, String title, String author, int year) {
-            this.book_id = book_id;
-            this.title = title;
-            this.author = author;
-            this.year = year;
-      }
-
       public Person getPerson() {
             return person;
       }
 
+      public Boolean getExpired() {
+            return expired;
+      }
+
+      public void setExpired(Boolean expired) {
+            this.expired = expired;
+      }
+
       public void setPerson(Person person) {
             this.person = person;
+      }
+
+      public Date getTaken_at() {
+            return taken_at;
+      }
+
+      public void setTaken_at(Date taken_at) {
+            this.taken_at = taken_at;
+      }
+
+      @Override
+      public String toString() {
+            return "Book{" +
+                    "created_at=" + taken_at +
+                    '}';
       }
 }

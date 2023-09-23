@@ -3,6 +3,7 @@ package kg.rakhim.classes.controllers;
 
 import jakarta.validation.Valid;
 import kg.rakhim.classes.model.Person;
+import kg.rakhim.classes.services.BookServices;
 import kg.rakhim.classes.services.PersonService;
 //import kg.rakhim.classes.util.PeopleValidator;
 import kg.rakhim.classes.util.PeopleValidator;
@@ -13,17 +14,21 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @Controller
 @RequestMapping("/people")
 @Transactional
 public class PeopleController {
     private final PersonService personService;
     private final PeopleValidator peopleValidator;
+    private final BookServices bookServices;
 
     @Autowired
-    public PeopleController(PersonService personService, PeopleValidator peopleValidator) {
+    public PeopleController(PersonService personService, PeopleValidator peopleValidator, BookServices bookServices) {
         this.personService = personService;
         this.peopleValidator = peopleValidator;
+        this.bookServices = bookServices;
     }
 
     @GetMapping

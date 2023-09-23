@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -54,7 +55,9 @@ public class BookServices {
 
     @Transactional
     public void update(int id, Book book){
-        book.setBook_id(id);
+        Book update = bookRepository.findById(id).get();
+        book.setBook_id(update.getBook_id());
+        book.setPerson(update.getPerson());
         bookRepository.save(book);
     }
 
@@ -74,6 +77,7 @@ public class BookServices {
 //        });
         Book book = bookRepository.findById(id).get();
         book.setPerson(null);
+        book.setTaken_at(null);
     }
 
     @Transactional
@@ -81,7 +85,16 @@ public class BookServices {
 //        Book book = bookRepository.findById(id).get();
 //        book.setPerson(selectedPerson);
         bookRepository.findById(id).ifPresent(b -> {
+            b.setTaken_at(new Date());
             b.setPerson(selectedPerson);
         });
     }
+
+
+    public void overdue(int id) {
+
+    }
+
+
+
 }
